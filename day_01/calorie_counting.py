@@ -41,7 +41,9 @@ if __name__ == '__main__':
     
     calorie_list = get_processed_input("day_01/input_pt1.txt")
     calories_per_elf = get_calories_per_elf(calorie_list)
+    pt1 = sum(get_most_calories(calories_per_elf))
+    pt2 = sum(get_most_calories(calories_per_elf, num_elves=3))
 
-    print(f'Part 1: {get_most_calories(calories_per_elf)}')
-    print(f'Part 2: {get_most_calories(calories_per_elf, num_elves=3)}')
+    print(f'Part 1: {pt1}')
+    print(f'Part 2: {pt2}')
     
