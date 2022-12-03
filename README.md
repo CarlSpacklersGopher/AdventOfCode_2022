@@ -13,7 +13,7 @@ I'm doing Advent of Code for 2 primary reasons:
 ## Progress:
 | Day | Challenges Completed | Unit Tests Complete |
 | :---: | :--------------------: | :-------------------: |
-| Dec 01 | 1 | N |
+| Dec 01 | 2 | Y |
 | Dec 02 | 0 | N |
 | Dec 03 | 0 | N |
 | Dec 04 | 0 | N |
