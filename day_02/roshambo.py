@@ -17,14 +17,21 @@ SCISSORS = Shape(shape         = 'Scissors',
                  wins_against  = 'Paper',
                  loses_against = 'Rock')
 
+opponent_decoder = {'A':'Rock',
+                    'B':'Paper',
+                    'C':'Scissors'}
 
-opponent_decoder = {'A':ROCK,
-                    'B':PAPER,
-                    'C':SCISSORS}
+your_decoder_pt1 = {'X':'Rock',
+                    'Y':'Paper',
+                    'Z':'Scissors'}
 
-your_decoder = {'X':ROCK,
-                'Y':PAPER,
-                'Z':SCISSORS}
+your_decoder_pt2 = {'X':'Lose',
+                    'Y':'Draw',
+                    'Z':'Win'}
+
+rps_lookup = {'Rock'     :ROCK,
+              'Paper'    :PAPER,
+              'Scissors' :SCISSORS}
 
 def calculate_score(opponent:Shape, you:Shape) -> int:
     '''
@@ -49,13 +56,18 @@ def determine_win_pts(opponent:Shape, you:Shape) -> int:
         return loss_points
 
 
-def decode_strategy_guide(filepath:str) -> zip:
+def decode_strategy_guide(filepath:str, pt1_2:int) -> zip:
     '''
     Translates Strategy Guide to Human Readable Format
     Returns zip object - first object for each is opponent, second is you
     '''
     opponent_inputs = []
     your_inputs = []
+    if pt1_2 == 1:
+        your_decoder = your_decoder_pt1
+    else:
+        your_decoder = your_decoder_pt2
+
     with open(filepath, 'r') as file:
         for line in file:
             opponent_code, your_code = line.strip().split()
@@ -64,18 +76,40 @@ def decode_strategy_guide(filepath:str) -> zip:
     
     return zip(opponent_inputs, your_inputs, strict=True)
 
+def get_your_shape(opponent:Shape, your_strategy:str) -> str:
+    '''
+    Returns the name of the shape you need to throw based on what opponent is throwing and your strategy
+    '''
+    your_shape = None
+    if your_strategy == 'Draw':
+        your_shape = opponent.shape
+    elif your_strategy == 'Lose':
+        your_shape = opponent.wins_against
+    else: # Win
+        your_shape = opponent.loses_against
+    return your_shape
 
-def play_tournament(filepath:str) -> int:
+def play_tournament(filepath:str, pt1_2:int) -> int:
     '''
     Returns your total score for all games in Rock Paper Scissors tournament
     '''
     game_scores = []
-    strategy_guide = decode_strategy_guide(filepath)
-    for opponent, you in strategy_guide:
+    strategy_guide = decode_strategy_guide(filepath, pt1_2)
+    for opponent_shape_str, strategy in strategy_guide:
+        opponent = rps_lookup[opponent_shape_str] # Get Shape object from name
+        if pt1_2 == 1:
+            # Pt 1, strategy is direct - get shape object
+            you = rps_lookup[strategy]
+        else:
+            # Pt 2, need to figure out which shape to throw
+            you = rps_lookup[get_your_shape(opponent, strategy)]
+        
         game_score = calculate_score(opponent, you)
         game_scores.append(game_score)
     return sum(game_scores)
 
 if __name__ == '__main__':
-    tourney_score = play_tournament('day_02/input.txt')
-    print('Tournament Score: ' + str(tourney_score))
+    tourney_score1 = play_tournament('day_02/input.txt', 1)
+    tourney_score2 = play_tournament('day_02/input.txt', 2)
+    print('Tournament Score Pt 1: ' + str(tourney_score1))
+    print('Tournament Score Pt 2: ' + str(tourney_score2))
