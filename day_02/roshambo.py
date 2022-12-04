@@ -1,26 +1,38 @@
-opponent_decoder = {'A':'Rock',
-                    'B':'Paper',
-                    'C':'Scissors'}
+import collections
 
-your_decoder = {'X':'Rock',
-                'Y':'Paper',
-                'Z':'Scissors'}
+Shape = collections.namedtuple('Shape', ['shape', 'points', 'wins_against', 'loses_against'])
 
-def calculate_score(opponent:str, you:str) -> int:
+ROCK = Shape(shape         = 'Rock', 
+             points        = 1,
+             wins_against  = 'Scissors',
+             loses_against = 'Paper')
+
+PAPER = Shape(shape         = 'Paper', 
+              points        = 2,
+              wins_against  = 'Rock',
+              loses_against = 'Scissors')
+
+SCISSORS = Shape(shape         = 'Scissors', 
+                 points        = 3,
+                 wins_against  = 'Paper',
+                 loses_against = 'Rock')
+
+
+opponent_decoder = {'A':ROCK,
+                    'B':PAPER,
+                    'C':SCISSORS}
+
+your_decoder = {'X':ROCK,
+                'Y':PAPER,
+                'Z':SCISSORS}
+
+def calculate_score(opponent:Shape, you:Shape) -> int:
     '''
     Calculates your score for a given game of Rock Paper Scissors
     '''
-    # There's an easier way to do this than if/else chains in 2 separate functions
-    points = determine_win_pts(opponent, you)
-    if you == 'Rock':
-        points += 1
-    elif you == 'Paper':
-        points += 2
-    elif you == 'Scissors':
-        points += 3
-    return points
+    return determine_win_pts(opponent, you) + you.points
 
-def determine_win_pts(opponent:str, you:str) -> int:
+def determine_win_pts(opponent:Shape, you:Shape) -> int:
     '''
     Returns points earned from result of the game of Rock Paper Scissors
     Loss: 0, Draw: 3, Win: 6
@@ -29,16 +41,12 @@ def determine_win_pts(opponent:str, you:str) -> int:
     draw_points = 3
     loss_points = 0
 
-    # This stinks
     if you == opponent:
         return draw_points
-    elif you == "Rock" and opponent == "Scissors":
+    elif opponent.shape == you.wins_against:
         return win_points
-    elif you == "Paper" and opponent == "Rock":
-        return win_points
-    elif you == "Scissors" and opponent == "Paper":
-        return win_points
-    return loss_points
+    else:
+        return loss_points
 
 
 def decode_strategy_guide(filepath:str) -> zip:
