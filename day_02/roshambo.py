@@ -10,14 +10,36 @@ def calculate_score(opponent:str, you:str) -> int:
     '''
     Calculates your score for a given game of Rock Paper Scissors
     '''
-    pass
+    # There's an easier way to do this than if/else chains in 2 separate functions
+    points = determine_win_pts(opponent, you)
+    if you == 'Rock':
+        points += 1
+    elif you == 'Paper':
+        points += 2
+    elif you == 'Scissors':
+        points += 3
+    return points
 
 def determine_win_pts(opponent:str, you:str) -> int:
     '''
     Returns points earned from result of the game of Rock Paper Scissors
     Loss: 0, Draw: 3, Win: 6
     '''
-    pass
+    win_points = 6
+    draw_points = 3
+    loss_points = 0
+
+    # This stinks
+    if you == opponent:
+        return draw_points
+    elif you == "Rock" and opponent == "Scissors":
+        return win_points
+    elif you == "Paper" and opponent == "Rock":
+        return win_points
+    elif you == "Scissors" and opponent == "Paper":
+        return win_points
+    return loss_points
+
 
 def decode_strategy_guide(filepath:str) -> zip:
     '''
@@ -39,7 +61,13 @@ def play_tournament(filepath:str) -> int:
     '''
     Returns your total score for all games in Rock Paper Scissors tournament
     '''
-    pass
+    game_scores = []
+    strategy_guide = decode_strategy_guide(filepath)
+    for opponent, you in strategy_guide:
+        game_score = calculate_score(opponent, you)
+        game_scores.append(game_score)
+    return sum(game_scores)
 
 if __name__ == '__main__':
-    pass
+    tourney_score = play_tournament('day_02/testinput.txt')
+    print('Tournament Score: ' + str(tourney_score))
