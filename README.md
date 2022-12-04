@@ -14,7 +14,7 @@ I'm doing Advent of Code for 2 primary reasons:
 | Day | Challenges Completed | Unit Tests Complete |
 | :---: | :--------------------: | :-------------------: |
 | Dec 01 | 2 | Y |
-| Dec 02 | 0 | N |
+| Dec 02 | 1 | Y |
 | Dec 03 | 0 | N |
 | Dec 04 | 0 | N |
 | Dec 05 | 0 | N |

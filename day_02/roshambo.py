@@ -69,5 +69,5 @@ def play_tournament(filepath:str) -> int:
     return sum(game_scores)
 
 if __name__ == '__main__':
-    tourney_score = play_tournament('day_02/testinput.txt')
+    tourney_score = play_tournament('day_02/input.txt')
     print('Tournament Score: ' + str(tourney_score))
