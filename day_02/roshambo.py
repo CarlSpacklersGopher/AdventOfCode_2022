@@ -19,12 +19,21 @@ def determine_win_pts(opponent:str, you:str) -> int:
     '''
     pass
 
-def decode_strategy_guide(filepath:str) -> enumerate:
+def decode_strategy_guide(filepath:str) -> zip:
     '''
     Translates Strategy Guide to Human Readable Format
-    Returns enumerate object - first object for each is opponent, second is you
+    Returns zip object - first object for each is opponent, second is you
     '''
-    pass
+    opponent_inputs = []
+    your_inputs = []
+    with open(filepath, 'r') as file:
+        for line in file:
+            opponent_code, your_code = line.strip().split()
+            opponent_inputs.append(opponent_decoder[opponent_code])
+            your_inputs.append(your_decoder[your_code])
+    
+    return zip(opponent_inputs, your_inputs, strict=True)
+
 
 def play_tournament(filepath:str) -> int:
     '''

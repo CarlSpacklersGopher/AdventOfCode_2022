@@ -3,17 +3,18 @@ import roshambo as r
 
 class TestRoshambo(unittest.TestCase):
     def test_decoder(self):
-        decoded = r.decode_strategy_guide('day_02/testinput.txt')
+        # Convert returned zip to list so we can access by index - avoiding for loop in test
+        decoded = list(r.decode_strategy_guide('day_02/testinput.txt'))
         
         # Test opponent input decoded
         self.assertEqual(decoded[0][0], 'Rock')
-        self.assertEqual(decoded[0][1], 'Paper')
-        self.assertEqual(decoded[0][2], 'Scissors')
+        self.assertEqual(decoded[1][0], 'Paper')
+        self.assertEqual(decoded[2][0], 'Scissors')
 
         # Test your input decoded
-        self.assertEqual(decoded[1][0], 'Paper')
+        self.assertEqual(decoded[0][1], 'Paper')
         self.assertEqual(decoded[1][1], 'Rock')
-        self.assertEqual(decoded[1][2], 'Scissors')
+        self.assertEqual(decoded[2][1], 'Scissors')
 
 
     def test_game_outcome(self):
