@@ -6,9 +6,10 @@
 Each day from December 1 - December 25, 2 puzzles are given to solve.
 
 ## Goals
-I'm doing Advent of Code for 2 primary reasons:
+I'm doing Advent of Code for 3 primary reasons:
 1. To dust off my Python skills
 2. Learn more about Unit Testing
+3. Learn more about Git
 
 ## Progress:
 | Day | Challenges Completed | Unit Tests Complete |
