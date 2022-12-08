@@ -43,7 +43,7 @@ class TestStacks(unittest.TestCase):
         ]
 
         move = s.Move(source=1, destination=2, boxes=1)
-        s.move_package(stacks, move)
+        s.move_packages_individually(stacks, move)
 
         self.assertEqual(stacks[1], anticipated_stacks[1])
         self.assertEqual(stacks[2], anticipated_stacks[2])
@@ -62,7 +62,7 @@ class TestStacks(unittest.TestCase):
         ]
 
         move = s.Move(source=2, destination=1, boxes=2)
-        s.move_package(stacks, move)
+        s.move_packages_individually(stacks, move)
 
         self.assertEqual(stacks[1], anticipated_stacks[1])
         self.assertEqual(stacks[2], anticipated_stacks[2])
@@ -79,10 +79,13 @@ class TestStacks(unittest.TestCase):
 
         self.assertEqual(actual_top_boxes, 'NDP')
 
-    def test_rearrange(self):
-        actual_top_boxes = s.rearrange_crates('day_05/testinput.txt')
+    def test_rearrange_pt1(self):
+        actual_top_boxes = s.rearrange_crates('day_05/testinput.txt', 1)
 
         self.assertEqual(actual_top_boxes, 'CMZ')
+
+    def test_rearrange_pt2(self):
+        pass
 
 
 if __name__ == '__main__':

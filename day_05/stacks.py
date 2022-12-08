@@ -50,13 +50,16 @@ def get_moves(filepath:str) -> list[Move]:
     return moves
             
 
-def move_package(package_stacks:list, instruction:Move):
+def move_packages_individually(package_stacks:list, instruction:Move):
     '''
     Moves package from one stack to another based on instruction
     '''
     for repetition in range(instruction.boxes):
         box_to_move = package_stacks[instruction.source].pop()
         package_stacks[instruction.destination].append(box_to_move)
+
+def move_package_stacks(package_stacks:list, instruction:Move):
+    pass
 
 def get_top_boxes(package_stacks:list) -> str:
     '''
@@ -68,7 +71,7 @@ def get_top_boxes(package_stacks:list) -> str:
             top_boxes += stack[-1]
     return top_boxes
 
-def rearrange_crates(filepath:str) -> str:
+def rearrange_crates(filepath:str, pt:int) -> str:
     '''
     Rearranges the stacks of crates based on the list of instructions
     Returns string of the top crate from each stack, in order
@@ -77,13 +80,16 @@ def rearrange_crates(filepath:str) -> str:
     moves = get_moves(filepath)
 
     for move in moves:
-        move_package(stacks, move)
+        if pt == 1:
+            move_packages_individually(stacks, move)
+        elif pt == 2:
+            move_package_stacks(stacks, move)
 
     return get_top_boxes(stacks)
 
 if __name__ == '__main__':
     filepath = 'day_05/input.txt'
-    pt1 = rearrange_crates(filepath)
+    pt1 = rearrange_crates(filepath, 1)
     print(f'Part 1: {pt1}')
 
     pt2 = None
