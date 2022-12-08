@@ -29,7 +29,7 @@ class TestStacks(unittest.TestCase):
         self.assertEqual(actual_moves[2], move3)
         self.assertEqual(actual_moves[3], move4)
 
-    def test_move1package(self):
+    def test_move1package_individually(self):
         stacks = [
             [],
             ['Z', 'N'],
@@ -48,7 +48,7 @@ class TestStacks(unittest.TestCase):
         self.assertEqual(stacks[1], anticipated_stacks[1])
         self.assertEqual(stacks[2], anticipated_stacks[2])
     
-    def test_move_multiple_packages(self):
+    def test_move_multiple_packages_individually(self):
         stacks = [
             [],
             ['Z', 'N'],
@@ -66,7 +66,45 @@ class TestStacks(unittest.TestCase):
 
         self.assertEqual(stacks[1], anticipated_stacks[1])
         self.assertEqual(stacks[2], anticipated_stacks[2])
+    
+    def test_move1package_stack(self):
+        stacks = [
+            [],
+            ['Z', 'N'],
+            ['M', 'C', 'D'],
+        ]
 
+        anticipated_stacks = [
+            [],
+            ['Z'],
+            ['M', 'C', 'D', 'N'],
+        ]
+
+        move = s.Move(source=1, destination=2, boxes=1)
+        s.move_package_stacks(stacks, move)
+
+        self.assertEqual(stacks[1], anticipated_stacks[1])
+        self.assertEqual(stacks[2], anticipated_stacks[2])
+    
+    def test_move_multiple_packages_stacks(self):
+        stacks = [
+            [],
+            ['Z', 'N'],
+            ['M', 'C', 'D'],
+        ]
+
+        anticipated_stacks = [
+            [],
+            ['Z', 'N', 'C', 'D'],
+            ['M'],
+        ]
+
+        move = s.Move(source=2, destination=1, boxes=2)
+        s.move_package_stacks(stacks, move)
+
+        self.assertEqual(stacks[1], anticipated_stacks[1])
+        self.assertEqual(stacks[2], anticipated_stacks[2])
+    
     def test_top_boxes(self):
         stacks = [
             [],
@@ -85,8 +123,10 @@ class TestStacks(unittest.TestCase):
         self.assertEqual(actual_top_boxes, 'CMZ')
 
     def test_rearrange_pt2(self):
-        pass
+        actual_top_boxes = s.rearrange_crates('day_05/testinput.txt', 2)
 
+        self.assertEqual(actual_top_boxes, 'MCD')
+    
 
 if __name__ == '__main__':
     unittest.main()

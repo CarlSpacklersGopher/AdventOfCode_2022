@@ -59,7 +59,10 @@ def move_packages_individually(package_stacks:list, instruction:Move):
         package_stacks[instruction.destination].append(box_to_move)
 
 def move_package_stacks(package_stacks:list, instruction:Move):
-    pass
+    source_stack = package_stacks[instruction.source]
+    boxes_to_move = source_stack[-1 * instruction.boxes:]
+    package_stacks[instruction.source] = source_stack[:-1 * instruction.boxes]
+    package_stacks[instruction.destination] = package_stacks[instruction.destination] + boxes_to_move
 
 def get_top_boxes(package_stacks:list) -> str:
     '''
@@ -92,5 +95,5 @@ if __name__ == '__main__':
     pt1 = rearrange_crates(filepath, 1)
     print(f'Part 1: {pt1}')
 
-    pt2 = None
+    pt2 = rearrange_crates(filepath, 2)
     print(f'Part 2: {pt2}')
