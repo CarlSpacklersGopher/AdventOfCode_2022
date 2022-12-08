@@ -2,7 +2,7 @@ import unittest
 import stacks as s
 
 class TestStacks(unittest.TestCase):
-
+    
     def test_stack_read(self):
         actual_stacks = s.get_starting_stacks('day_05/testinput.txt')
         anticipated_stacks = [
@@ -43,7 +43,7 @@ class TestStacks(unittest.TestCase):
         ]
 
         move = s.Move(source=1, destination=2, boxes=1)
-        s.move_package = (stacks, move)
+        s.move_package(stacks, move)
 
         self.assertEqual(stacks[1], anticipated_stacks[1])
         self.assertEqual(stacks[2], anticipated_stacks[2])
@@ -62,7 +62,7 @@ class TestStacks(unittest.TestCase):
         ]
 
         move = s.Move(source=2, destination=1, boxes=2)
-        s.move_package = (stacks, move)
+        s.move_package(stacks, move)
 
         self.assertEqual(stacks[1], anticipated_stacks[1])
         self.assertEqual(stacks[2], anticipated_stacks[2])
