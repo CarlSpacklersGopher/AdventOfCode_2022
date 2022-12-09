@@ -11,6 +11,9 @@ I'm doing Advent of Code for 3 primary reasons:
 2. Learn more about Unit Testing
 3. Learn more about Git
 
+## Python Version
+3.11 or later
+
 ## Progress:
 | Day | Challenges Completed | Unit Tests Complete |
 | :---: | :--------------------: | :-------------------: |
