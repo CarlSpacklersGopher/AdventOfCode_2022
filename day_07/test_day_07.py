@@ -72,40 +72,41 @@ class TestDay07(unittest.TestCase):
     
     def test_get_dirs_to_delete(self):
         # test file - should return empty list since not dir
-        max_dir_size = self.i.get_size() - 1 # ensure file should be deleted
-        deletions = day_07.get_dirs_to_delete(self.i, max_dir_size)
+        day_07.compare_size = self.i.get_size() - 1 # ensure file should be deleted
+        deletions = day_07.get_nodes_matching_criteria(self.i, day_07.is_dir_lte_size)
         self.assertEqual(deletions, [])
 
         # single layer - maxsize > dir size -> delete
-        max_dir_size = self.d.get_size() + 1
-        deletions = day_07.get_dirs_to_delete(self.d, max_dir_size)
+        day_07.compare_size = self.d.get_size() + 1
+        deletions = day_07.get_nodes_matching_criteria(self.d, day_07.is_dir_lte_size)
         self.assertEqual(deletions, [self.d])
 
         # single layer - maxsize == dir size -> delete
-        max_dir_size = self.d.get_size()
-        deletions = day_07.get_dirs_to_delete(self.d, max_dir_size)
+        day_07.compare_size = self.d.get_size()
+        deletions = day_07.get_nodes_matching_criteria(self.d, day_07.is_dir_lte_size)
         self.assertEqual(deletions, [self.d])
 
         # single layer - maxsize < dir size -> don't delete
-        max_dir_size = self.d.get_size() - 1
-        deletions = day_07.get_dirs_to_delete(self.d, max_dir_size)
+        day_07.compare_size = self.d.get_size() - 1
+        deletions = day_07.get_nodes_matching_criteria(self.d, day_07.is_dir_lte_size)
         self.assertEqual(deletions, [])
 
         # multiple layers
-        max_dir_size = self.a.get_size() + 1
-        deletions = day_07.get_dirs_to_delete(self.a, max_dir_size)
+        day_07.compare_size = self.a.get_size() + 1
+        deletions = day_07.get_nodes_matching_criteria(self.a, day_07.is_dir_lte_size)
         self.assertEqual(deletions, [self.a, self.e])
 
-        max_dir_size = 100_000
-        deletions = day_07.get_dirs_to_delete(self.ROOT, max_dir_size)
+        day_07.compare_size = 100_000
+        deletions = day_07.get_nodes_matching_criteria(self.a, day_07.is_dir_lte_size)
         self.assertEqual(deletions, [self.a, self.e])
-
+    
     def test_day_07_pt1(self):
-        actual_size = day_07.get_space_savings(self.ROOT, 100_000)
+        actual_size = day_07.part1(self.ROOT, 100_000)
         self.assertEqual(actual_size, 95437)
 
     def test_day_07_pt2(self):
-        pass
-
+        actual_size = day_07.part2(self.ROOT, 70000000, 30000000)
+        self.assertEqual(actual_size, 24933642)
+    
 if __name__ == '__main__':
     unittest.main()

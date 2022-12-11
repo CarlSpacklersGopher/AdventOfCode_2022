@@ -78,6 +78,7 @@ class Node:
         
 ROOT = None
 
+compare_size = 0
 
 def build_file_tree(filepath:str) -> Node:
     '''
@@ -132,30 +133,57 @@ def build_file_tree(filepath:str) -> Node:
             file_node = Node(file_name, file_size)
             current_node.add_child(file_node)
 
-def get_dirs_to_delete(filetree_root:Node, max_dir_size:int) -> list[Node]:
-    if not filetree_root.isDir:
-        return []
-    dirs_to_delete = []
-    current_node = filetree_root
-    node_size = current_node.get_size()
-    if node_size <= max_dir_size:
-        dirs_to_delete.append(current_node)
+def get_nodes_matching_criteria(filetree_root:Node, criteria_fn) -> list[Node]:
+    '''
+    Returns list of nodes matching the criteria function.
+    criteria(compare_node:Node) -> bool
+    '''
+    nodes = []
+    if criteria_fn(filetree_root):
+        nodes.append(filetree_root)
 
-    for child_node in current_node.children:
-        dirs_to_delete += get_dirs_to_delete(child_node, max_dir_size)
+    for child in filetree_root.children:
+        nodes += get_nodes_matching_criteria(child, criteria_fn)
+
+    return nodes
     
-    return dirs_to_delete
+def is_dir_gte_size(compare_node:Node) -> bool:
+    global compare_size
+    if not compare_node.isDir:
+        return False
+    return compare_node.get_size() >= compare_size
 
-def get_space_savings(filetree_root:Node, max_dir_size:int) -> int:
-    dirs = get_dirs_to_delete(filetree_root, max_dir_size)
+def is_dir_lte_size(compare_node:Node) -> bool:
+    global compare_size
+    if not compare_node.isDir:
+        return False
+    return compare_node.get_size() <= compare_size
+
+def part1(filetree_root:Node, max_dir_size:int) -> int:
+    global compare_size
+    compare_size = max_dir_size
+    dirs = get_nodes_matching_criteria(filetree_root, is_dir_lte_size)
     dir_sizes = [dir.get_size() for dir in dirs]
     return sum(dir_sizes)
 
+def part2(filesystem_root:Node, total_disk_space:int, needed_disk_space:int) -> int:
+    global compare_size
+    free_space = total_disk_space - filesystem_root.get_size()
+    if free_space > needed_disk_space:
+        return 0
+
+    need_to_delete = needed_disk_space - free_space
+    compare_size = need_to_delete
+    dirs = get_nodes_matching_criteria(filesystem_root, is_dir_gte_size)
+    sizes = [dir.get_size() for dir in dirs]
+    return min(sizes)
+
+
 if __name__ == '__main__':
     build_file_tree('day_07/input.txt')
-    pt1 = get_space_savings(ROOT, 100_000)
+    pt1 = part1(ROOT, 100_000)
     print('Part 1: ' + str(pt1))
 
-    pt2 = None
+    pt2 = part2(ROOT, 70000000, 30000000)
     print('Part 2: ' + str(pt2))
     
