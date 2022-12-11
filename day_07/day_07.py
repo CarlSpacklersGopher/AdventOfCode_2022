@@ -2,10 +2,13 @@
 class Node:
 
     _indents = 0
+    isDir = False
     
     def __init__(self, name:str, size:int=0):
         self.name = name
         self._size = size
+        if not size:
+            self.isDir = True
         self.children = []
         self.children_edited = False
 
@@ -22,10 +25,11 @@ class Node:
         child_name = path_parts[1]
         desired_node_name = path_parts[-1]
         for child in self.children:
-            if desired_node_name == child.name:
+            child_rel_path = '/'.join(path_parts[1:])
+            # if we're in the requested folder/node, relpath == child.name
+            if child_rel_path == child.name:
                 return child
             elif child.name == child_name:
-                child_rel_path = '/'.join(path_parts[1:])
                 return child.get_child(child_rel_path)
 
     def get_size(self, max_file_size:int = -1) -> int:
@@ -55,9 +59,8 @@ class Node:
 
     def __str__(self):
         lines = []
-        is_dir = bool(self.children)
         indent = '  ' * self._indents
-        if is_dir:
+        if self.isDir:
             node_description = '(dir)'
         else:
             node_description = f'(file, size={self._size})'
@@ -69,14 +72,12 @@ class Node:
         self._indents = 0
         return '\n'.join(lines)
 
-    def _get_child_str(self, indents):
-        for child in self.children:
-            pass
             
 
 
         
 ROOT = None
+
 
 def build_file_tree(filepath:str) -> Node:
     '''
@@ -121,7 +122,8 @@ def build_file_tree(filepath:str) -> Node:
                     current_node = ROOT.get_child(current_dir)
 
         elif pieces[0] == 'dir':
-            dir_node = Node(pieces[1])
+            node_name = pieces[1]
+            dir_node = Node(node_name)
             current_node.add_child(dir_node)
         else: # file object
             file_size = int(pieces[0])
@@ -130,11 +132,28 @@ def build_file_tree(filepath:str) -> Node:
             file_node = Node(file_name, file_size)
             current_node.add_child(file_node)
 
+def get_dirs_to_delete(filetree_root:Node, max_dir_size:int) -> list[Node]:
+    if not filetree_root.isDir:
+        return []
+    dirs_to_delete = []
+    current_node = filetree_root
+    node_size = current_node.get_size()
+    if node_size <= max_dir_size:
+        dirs_to_delete.append(current_node)
 
+    for child_node in current_node.children:
+        dirs_to_delete += get_dirs_to_delete(child_node, max_dir_size)
+    
+    return dirs_to_delete
 
+def get_space_savings(filetree_root:Node, max_dir_size:int) -> int:
+    dirs = get_dirs_to_delete(filetree_root, max_dir_size)
+    dir_sizes = [dir.get_size() for dir in dirs]
+    return sum(dir_sizes)
 
 if __name__ == '__main__':
-    pt1 = None
+    build_file_tree('day_07/input.txt')
+    pt1 = get_space_savings(ROOT, 100_000)
     print('Part 1: ' + str(pt1))
 
     pt2 = None
