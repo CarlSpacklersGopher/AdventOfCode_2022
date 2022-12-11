@@ -23,7 +23,7 @@ I'm doing Advent of Code for 3 primary reasons:
 | Dec 04 | 2 | N |
 | Dec 05 | 2 | Y |
 | Dec 06 | 2 | Y |
-| Dec 07 | 1 | Y |
+| Dec 07 | 2 | Y |
 | Dec 08 | 0 | N |
 | Dec 09 | 0 | N |
 | Dec 10 | 0 | N |
