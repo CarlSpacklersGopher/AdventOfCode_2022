@@ -39,6 +39,26 @@ def reverse_elements(list2D:list[list[int]]):
     for row in list2D:
         row.reverse()
 
+def get_trees_in_view(coords:tuple, tree_heights:np.ndarray) -> list[list[int]]:
+    '''
+    Returns a list of the trees north, south, east, and west of the tree at coords.
+    Order of trees is from current tree looking outward in each direction.
+    Returns a list of lists - [[north],[south],[east],[west]]
+    '''
+    row, col = coords
+    
+    north_trees = tree_heights[:row, col].tolist()
+    north_trees.reverse()
+
+    south_trees = tree_heights[row+1:,col].tolist()
+
+    east_trees = tree_heights[row, col+1:].tolist()
+
+    west_trees = tree_heights[row, :col].tolist()
+    west_trees.reverse()
+
+    return [north_trees, south_trees, east_trees, west_trees]
+
 def get_visibility_from_north(tree_heights:list[list[int]]) -> list[list[bool]]:
     '''
     Generates matrix of booleans that indicates if each tree is visible from north, looking south.
@@ -103,6 +123,39 @@ def count_visible_trees(tree_heights:list[list[int]]) -> int:
     visible_trees = np.bitwise_or(ns_vis, ew_vis)
     return np.count_nonzero(visible_trees)
 
+def view_distance(tree_height:int, other_trees:list[int]) -> int:
+    '''Gets number of trees visible between this tree and edge or next blocking tree'''
+    distance = 0
+    for other_height in other_trees:
+        distance += 1
+        if tree_height <= other_height:
+            return distance
+    return distance
+
+def scenic_score(coords:tuple, tree_heights:np.ndarray) -> int:
+    '''
+    Calculates scenic score of the tree at xy coordinates in the tree_heights matrix.
+    '''
+    tree = tree_heights[coords]
+    directions = get_trees_in_view(coords, tree_heights)
+    view_distances = []
+    for direction in directions:
+        view_distances.append(view_distance(tree, direction))
+    
+    return np.prod(view_distances)
+
+def part2(tree_heights: list[list[int]]) -> int:
+    tree_arr = np.array(tree_heights)
+    scenic_scores = []
+    for row_idx, row in enumerate(tree_heights):
+        for col_idx in range(len(row)):
+            coords = (row_idx, col_idx)
+            scenic_scores.append(scenic_score(coords, tree_arr))
+
+    return max(scenic_scores)
+
+
+
 
 
 if __name__ == '__main__':
@@ -110,6 +163,6 @@ if __name__ == '__main__':
     pt1 = count_visible_trees(tree_heights)
     print('Part 1: ' + str(pt1))
 
-    pt2 = None
+    pt2 = part2(tree_heights)
     print('Part 2: ' + str(pt2))
     

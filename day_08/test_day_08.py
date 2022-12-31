@@ -82,6 +82,21 @@ class TestDay08(unittest.TestCase):
         actual_vis = day_08.get_visibility_from_west(self.trees)
         self.assertEqual(actual_vis, expected_vis)
 
+    def test_view_distance(self):
+        #test edge
+        self.assertEqual(day_08.view_distance(3, []), 0)
+
+        north_trees = [3]
+        south_trees = [3, 5, 3]
+        east_trees = [1, 2]
+        west_trees = [5, 2]
+
+        self.assertEqual(day_08.view_distance(5, north_trees), 1)
+        self.assertEqual(day_08.view_distance(5, south_trees), 2)
+        self.assertEqual(day_08.view_distance(5, east_trees), 2)
+        self.assertEqual(day_08.view_distance(5, west_trees), 1)
+
+
     def test_day_08_pt1(self):
         self.assertEqual(day_08.count_visible_trees(self.trees), 21)
 
