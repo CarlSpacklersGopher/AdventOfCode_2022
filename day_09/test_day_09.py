@@ -6,7 +6,7 @@ class TestDay09(unittest.TestCase):
 
     def setUp(self):
         self.moves = day_09.read_moves('day_09/testinput.txt')
-        self.rope = day_09.Rope()
+        self.rope = day_09.Rope(length=2)
 
     def test_location_logging(self):
         head_locations = {
@@ -41,72 +41,73 @@ class TestMoveCardinalDirections(unittest.TestCase):
 
     def setUp(self):
         self.moves = day_09.read_moves('day_09/testinput.txt')
-        self.rope = day_09.Rope()
+        self.rope = day_09.Rope(length=2)
 
 
     def test_move_up(self):
         move_dir = day_09.Direction.UP
         self.rope.move(move_dir, 1)
-        head_position = self.rope.head_position
-        tail_position = self.rope.tail_position
+        head_position = self.rope.head_knot.position
+        tail_knot = self.rope.trailing_knots[-1]
+        tail_position = tail_knot.position
 
         self.assertEqual(head_position, (0, 1))
         self.assertEqual(tail_position, (0, 0))
 
         self.rope.move(move_dir, 1)
-        head_position = self.rope.head_position
-        tail_position = self.rope.tail_position
+        head_position = self.rope.head_knot.position
+        tail_position = tail_knot.position
 
         self.assertEqual(head_position, (0, 2))
         self.assertEqual(tail_position, (0, 1))
-        self.rope = day_09.Rope()
 
     def test_move_down(self):
         move_dir = day_09.Direction.DOWN
         self.rope.move(move_dir, 1)
-        head_position = self.rope.head_position
-        tail_position = self.rope.tail_position
+        head_position = self.rope.head_knot.position
+        tail_knot = self.rope.trailing_knots[-1]
+        tail_position = tail_knot.position
 
         self.assertEqual(head_position, (0, -1))
         self.assertEqual(tail_position, (0, 0))
 
         self.rope.move(move_dir, 1)
-        head_position = self.rope.head_position
-        tail_position = self.rope.tail_position
+        head_position = self.rope.head_knot.position
+        tail_position = tail_knot.position
 
         self.assertEqual(head_position, (0, -2))
         self.assertEqual(tail_position, (0, -1))
-        self.rope = day_09.Rope()
 
     def test_move_left(self):
         move_dir = day_09.Direction.LEFT
         self.rope.move(move_dir, 1)
-        head_position = self.rope.head_position
-        tail_position = self.rope.tail_position
+        head_position = self.rope.head_knot.position
+        tail_knot = self.rope.trailing_knots[-1]
+        tail_position = tail_knot.position
 
         self.assertEqual(head_position, (-1, 0))
         self.assertEqual(tail_position, (0, 0))
 
         self.rope.move(move_dir, 1)
-        head_position = self.rope.head_position
-        tail_position = self.rope.tail_position
+        head_position = self.rope.head_knot.position
+        tail_position = tail_knot.position
 
         self.assertEqual(head_position, (-2, 0))
         self.assertEqual(tail_position, (-1, 0))
-        self.rope = day_09.Rope()
 
     def test_move_right(self):
         move_dir = day_09.Direction.RIGHT
         self.rope.move(move_dir, 1)
-        head_position = self.rope.head_position
-        tail_position = self.rope.tail_position
+        head_position = self.rope.head_knot.position
+        tail_knot = self.rope.trailing_knots[-1]
+        tail_position = tail_knot.position
 
         self.assertEqual(head_position, (1, 0))
         self.assertEqual(tail_position, (0, 0))
 
         self.rope.move(move_dir, 1)
-        head_position = self.rope.head_position
-        tail_position = self.rope.tail_position
+        head_position = self.rope.head_knot.position
+        tail_position = tail_knot.position
 
         self.assertEqual(head_position, (2, 0))
         self.assertEqual(tail_position, (1, 0))
@@ -116,7 +117,7 @@ class TestTailMoveDiagonal(unittest.TestCase):
 
     def setUp(self):
         self.moves = day_09.read_moves('day_09/testinput.txt')
-        self.rope = day_09.Rope()
+        self.rope = day_09.Rope(length=2)
 
     def test_move_up_right(self):
         setup_moves = [
@@ -132,8 +133,8 @@ class TestTailMoveDiagonal(unittest.TestCase):
         self.rope.move(day_09.Direction.RIGHT, 1)
 
         # Current Head Position: (2, 1)
-        self.assertEqual(self.rope.tail_position, (1, 1))
-        self.rope = day_09.Rope()
+        tail_knot = self.rope.trailing_knots[-1]
+        self.assertEqual(tail_knot.position, (1, 1))
 
     def test_move_up_left(self):
         setup_moves = [
@@ -149,8 +150,8 @@ class TestTailMoveDiagonal(unittest.TestCase):
         self.rope.move(day_09.Direction.LEFT, 1)
 
         # Current Head Position: (-2, 1)
-        self.assertEqual(self.rope.tail_position, (-1, 1))
-        self.rope = day_09.Rope()
+        tail_knot = self.rope.trailing_knots[-1]
+        self.assertEqual(tail_knot.position, (-1, 1))
 
     def test_move_down_left(self):
         setup_moves = [
@@ -166,8 +167,8 @@ class TestTailMoveDiagonal(unittest.TestCase):
         self.rope.move(day_09.Direction.LEFT, 1)
 
         # Current Head Position: (-2, -1)
-        self.assertEqual(self.rope.tail_position, (-1, -1))
-        self.rope = day_09.Rope()
+        tail_knot = self.rope.trailing_knots[-1]
+        self.assertEqual(tail_knot.position, (-1, -1))
 
     def test_move_down_right(self):
         setup_moves = [
@@ -183,7 +184,8 @@ class TestTailMoveDiagonal(unittest.TestCase):
         self.rope.move(day_09.Direction.RIGHT, 1)
 
         # Current Head Position: (2, -1)
-        self.assertEqual(self.rope.tail_position, (1, -1))
+        tail_knot = self.rope.trailing_knots[-1]
+        self.assertEqual(tail_knot.position, (1, -1))
 
 
 if __name__ == '__main__':
