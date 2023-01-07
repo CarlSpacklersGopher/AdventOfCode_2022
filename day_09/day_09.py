@@ -101,10 +101,10 @@ def direction_lookup(abbreviation:str):
 
 
 def main():
-    moves = read_moves('day_09/testinput.txt')
-    rope = Rope(length=1)
+    moves = read_moves('day_09/input.txt')
+    rope = Rope(length=2)
     move_rope(rope, moves)
-    pt1 = len(rope.get_unique_positions()[1])
+    pt1 = len(rope.get_unique_positions()[-1])
     print('Part 1: ' + str(pt1))
 
     pt2 = None
