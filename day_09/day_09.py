@@ -2,19 +2,19 @@ from enum import Enum
 
 class Direction(Enum):
     # values are unit x,y moves
-    UP = (0, 1) 
+    UP = (0, 1)
     DOWN = (0, -1)
     LEFT = (-1, 0)
     RIGHT = (1, 0)
-        
+
 
 class Plank:
     def __init__(self, length: int=1):
         self.length = length
         self.head_position = (0, 0)
         self.tail_position = (0, 0)
-        self.head_history = []
-        self.tail_history = []
+        self.head_history = [self.head_position]
+        self.tail_history = [self.tail_position]
 
     def move(self, direction: Direction, distance:int) -> None:
         for _ in range(distance):
@@ -23,7 +23,7 @@ class Plank:
                 self._move_tail()
 
             self.log_positions()
-    
+
     def _move_head(self, direction: Direction, distance:int) -> None:
         new_x = self.head_position[0] + direction.value[0]
         new_y = self.head_position[1] + direction.value[1]
@@ -37,7 +37,7 @@ class Plank:
     def _tail_should_move(self) -> bool:
         return (abs(self.head_position[0] - self.tail_position[0]) > self.length or
                 abs(self.head_position[1] - self.tail_position[1]) > self.length)
-            
+
     def log_positions(self) -> None:
         self.head_history.append(self.head_position)
         self.tail_history.append(self.tail_position)
@@ -72,7 +72,7 @@ def direction_lookup(abbreviation:str):
 
 
 def main():
-    moves = read_moves('day_09/input.txt')
+    moves = read_moves('day_09/testinput.txt')
     plank = Plank(length=1)
     move_plank(plank, moves)
     pt1 = len(plank.get_unique_positions()[1])
@@ -84,4 +84,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
