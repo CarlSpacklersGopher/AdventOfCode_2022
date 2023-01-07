@@ -21,6 +21,14 @@ if __name__ == '__main__':
 
     contents_dayx = '''
 
+def process_input(filepath: str) -> list:
+    input = []
+    with open(filepath, encoding='utf-8', mode='r') as f:
+        for line in f:
+            pass
+
+    return input
+
 def main():
     pt1 = None
     print('Part 1: ' + str(pt1))
@@ -50,7 +58,7 @@ def make_prompt_readable(day:str, line_chars:int = 100):
     folder_name = f'day_{day}'
     prompt_file = f'day_{day}_prompt.txt'
     prompt_path = os.path.join(folder_name, prompt_file)
-    
+
     with open (prompt_path, 'r+') as f:
         long_lines = f.readlines()
         broken_up_lines = []
@@ -84,4 +92,4 @@ def make_prompt_readable(day:str, line_chars:int = 100):
 if __name__ == '__main__':
     day_num_str = sys.argv[1]
     make_files(day_num_str)
-    
+
