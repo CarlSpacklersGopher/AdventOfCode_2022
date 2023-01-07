@@ -62,7 +62,7 @@ class CPU:
 
 def read_instructions(filepath:str) -> list[tuple]:
     instructions = []
-    with open(filepath, 'r') as f:
+    with open(filepath, encoding='utf-8',mode='r') as f:
         for line in f:
             if line.startswith('noop'):
                 instructions.append(('noop', None))
