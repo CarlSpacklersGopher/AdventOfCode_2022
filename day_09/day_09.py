@@ -9,7 +9,7 @@ class Direction(Enum):
     RIGHT = (1, 0)
 
 
-class Plank:
+class Rope:
     def __init__(self, length: int=1):
         self.length = length
         self.head_position = (0, 0)
@@ -70,9 +70,9 @@ def read_moves(filepath:str) -> list[tuple]:
             moves.append((direction, int(distance)))
     return moves
 
-def move_plank(plank:Plank, moves: list[tuple]):
+def move_rope(rope:Rope, moves: list[tuple]):
     for direction, distance in moves:
-        plank.move(direction, distance)
+        rope.move(direction, distance)
 
 def direction_lookup(abbreviation:str):
     if abbreviation == 'U':
@@ -88,9 +88,9 @@ def direction_lookup(abbreviation:str):
 
 def main():
     moves = read_moves('day_09/testinput.txt')
-    plank = Plank(length=1)
-    move_plank(plank, moves)
-    pt1 = len(plank.get_unique_positions()[1])
+    rope = Rope(length=1)
+    move_rope(rope, moves)
+    pt1 = len(rope.get_unique_positions()[1])
     print('Part 1: ' + str(pt1))
 
     pt2 = None
