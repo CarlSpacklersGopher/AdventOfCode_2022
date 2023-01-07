@@ -1,25 +1,29 @@
 
 class CRT:
     def __init__(self, rows: int, pixels_per_row: int):
-        self.screen = []
+        self.dot_matrix = []
         self.current_row = 0
         self.current_pixel = 0
         self.pixels_per_row = pixels_per_row
         for _ in range(rows):
-            self.screen.append(['.'] * pixels_per_row)
+            self.dot_matrix.append([' '] * pixels_per_row)
 
     def draw_pixel(self, cycle: int, sprite_position: int):
-        current_row = (cycle - 1) // self.pixels_per_row
-        current_pixel = (cycle - 1) % self.pixels_per_row
+        current_row = cycle // self.pixels_per_row
+        current_pixel = cycle % self.pixels_per_row
 
-        pixel_lit = sprite_position - 1 <= cycle <= sprite_position + 1
+        pixel_lit = sprite_position - 1 <= current_pixel <= sprite_position + 1
 
         if pixel_lit:
-            self.screen[current_row][current_pixel] = '#'
+            self.dot_matrix[current_row][current_pixel] = '#'
+
+        #print('During Cycle   '+str(cycle)+': CRT draws pixel in position '+str(current_pixel))
+        #print('Current CRT row: ' + ''.join(self.screen[current_row])[:current_pixel+1])
+        #print()
 
     def __str__(self) -> str:
         screen_str = ''
-        for row in self.screen:
+        for row in self.dot_matrix:
             screen_str += ''.join(row) + '\n'
         return screen_str
 
@@ -40,12 +44,17 @@ class CPU:
 
     def addx(self, x: int):
         self.tick()
+        #print('Start cycle   '+str(self.cycles)+': begin executing addx '+str(x))
         self.tick()
         self.register += x
+        #print('End of cycle  '+str(self.cycles)+': finish executing addx '+str(x)+' (Register X is now '+str(self.register))
 
     def tick(self):
-        self.cycles += 1
+        #sprite_pos = '.' * 40
+        #sprite_pos = sprite_pos[:self.register-1] + '###' + sprite_pos[self.register + 2:]
+        #print('Sprite Position: '+ sprite_pos)
         self.screen.draw_pixel(self.cycles, self.register)
+        self.cycles += 1
         # will be executed every cpu cycle, time intensive
         if self.cycles in self.interesting_cycles:
             self.interesting_signal_strengths.append(self.signal_strength)

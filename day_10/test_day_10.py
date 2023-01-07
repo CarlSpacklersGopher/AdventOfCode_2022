@@ -9,6 +9,7 @@ class TestDay10(unittest.TestCase):
         self.cpu = day_10.CPU(interesting_cycles=list(range(20, 220+1, 40)), screen=self.screen)
         self.instructions = day_10.read_instructions('day_10/testinput.txt')
 
+
     def test_noop(self):
         self.cpu.noop()
         self.assertEqual(self.cpu.cycles, 1)
@@ -43,13 +44,13 @@ class TestDay10(unittest.TestCase):
                            '#.......................................',
                            '........................................',
                            '........................................',
-                           '....#...................................',
+                           '.....#..................................',
                            '........................................']
 
-        self.screen.draw_pixel(cycle=1, sprite_position=1) # first row, first pixel lit
-        self.screen.draw_pixel(cycle=40, sprite_position=39) # first row, last pixel lit
-        self.screen.draw_pixel(cycle=41, sprite_position=42) # second row, first pixel lit
-        self.screen.draw_pixel(cycle=165, sprite_position=165) # fourth row, sixth pixel lit
+        self.screen.draw_pixel(cycle=0, sprite_position=1) # first row, first pixel lit
+        self.screen.draw_pixel(cycle=39, sprite_position=38) # first row, last pixel lit
+        self.screen.draw_pixel(cycle=40, sprite_position=1) # second row, first pixel lit
+        self.screen.draw_pixel(cycle=165, sprite_position=5) # fifth row, sixth pixel lit
 
         self.screen.draw_pixel(cycle=166, sprite_position=164) # not lit
         self.screen.draw_pixel(cycle=166, sprite_position=168) # not lit
