@@ -107,7 +107,9 @@ def main():
     pt1 = len(rope.get_unique_positions()[-1])
     print('Part 1: ' + str(pt1))
 
-    pt2 = None
+    rope = Rope(length=10)
+    move_rope(rope, moves)
+    pt2 = len(rope.get_unique_positions()[-1])
     print('Part 2: ' + str(pt2))
 
 

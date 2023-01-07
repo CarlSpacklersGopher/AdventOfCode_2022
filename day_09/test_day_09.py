@@ -5,7 +5,7 @@ import day_09
 class TestDay09(unittest.TestCase):
 
     def setUp(self):
-        self.moves = day_09.read_moves('day_09/testinput.txt')
+        self.moves = day_09.read_moves('day_09/pt1_testinput.txt')
         self.rope = day_09.Rope(length=2)
 
     def test_location_logging(self):
@@ -26,7 +26,7 @@ class TestDay09(unittest.TestCase):
 
         unique_locations = self.rope.get_unique_positions()
         self.assertEqual(unique_locations[0], head_locations)
-        self.assertEqual(unique_locations[1], tail_locations)
+        self.assertEqual(unique_locations[-1], tail_locations)
 
 
     def test_day_09_pt1(self):
@@ -35,12 +35,18 @@ class TestDay09(unittest.TestCase):
         self.assertEqual(len(self.rope.get_unique_positions()[1]), 13)
 
     def test_day_09_pt2(self):
-        pass
+        self.rope = day_09.Rope(length=10)
+        self.moves = day_09.read_moves('day_09/pt2_testinput.txt')
+
+        day_09.move_rope(self.rope, self.moves)
+
+        tail_positions = self.rope.get_unique_positions()[-1]
+        self.assertEqual(len(tail_positions), 36)
 
 class TestMoveCardinalDirections(unittest.TestCase):
 
     def setUp(self):
-        self.moves = day_09.read_moves('day_09/testinput.txt')
+        self.moves = day_09.read_moves('day_09/pt1_testinput.txt')
         self.rope = day_09.Rope(length=2)
 
 
@@ -116,7 +122,7 @@ class TestMoveCardinalDirections(unittest.TestCase):
 class TestTailMoveDiagonal(unittest.TestCase):
 
     def setUp(self):
-        self.moves = day_09.read_moves('day_09/testinput.txt')
+        self.moves = day_09.read_moves('day_09/pt1_testinput.txt')
         self.rope = day_09.Rope(length=2)
 
     def test_move_up_right(self):
