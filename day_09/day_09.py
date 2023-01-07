@@ -1,4 +1,5 @@
 from enum import Enum
+import math
 
 class Direction(Enum):
     # values are unit x,y moves
@@ -32,7 +33,21 @@ class Plank:
 
     def _move_tail(self):
         # tail follows head around
-        self.tail_position = self.head_history[-1]
+        relative_x = self.head_position[0] - self.tail_position[0]
+        relative_y = self.head_position[1] - self.tail_position[1]
+
+        x_to_move = relative_x
+        y_to_move = relative_y
+
+        if abs(relative_x) > 1: # Need to move in this direction.
+            x_to_move = math.copysign(1, relative_x) # Can only move 1 space in any direction
+        if abs(relative_y) > 1:
+            y_to_move = math.copysign(1, relative_y)
+
+        new_tail_x = self.tail_position[0] + int(x_to_move)
+        new_tail_y = self.tail_position[1] + int(y_to_move)
+
+        self.tail_position = (new_tail_x, new_tail_y)
 
     def _tail_should_move(self) -> bool:
         return (abs(self.head_position[0] - self.tail_position[0]) > self.length or
