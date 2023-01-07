@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
     os.mkdir(folder_name)
     for file_name, contents in files:
-        with open (os.path.join(folder_name, file_name), 'w') as f:
+        with open (os.path.join(folder_name, file_name), encoding='utf-8', mode='w') as f:
             f.write(contents)
 
 def make_prompt_readable(day:str, line_chars:int = 100):
@@ -59,7 +59,7 @@ def make_prompt_readable(day:str, line_chars:int = 100):
     prompt_file = f'day_{day}_prompt.txt'
     prompt_path = os.path.join(folder_name, prompt_file)
 
-    with open (prompt_path, 'r+') as f:
+    with open (prompt_path, encoding='utf-8', mode='r+') as f:
         long_lines = f.readlines()
         broken_up_lines = []
         for long_line in long_lines:
