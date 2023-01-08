@@ -91,5 +91,8 @@ def make_prompt_readable(day:str, line_chars:int = 100):
 
 if __name__ == '__main__':
     day_num_str = sys.argv[1]
-    make_files(day_num_str)
+    if len(sys.argv) == 2:
+        make_files(day_num_str)
+    else:
+        make_prompt_readable(day_num_str)
 
